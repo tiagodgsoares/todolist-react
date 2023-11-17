@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-interface Props {
+interface TodoFormProps {
   createTask: (task: string) => void;
 }
 
-const TodoForm: React.FC<Props> = ({ createTask }) => {
+const TodoForm: React.FC<TodoFormProps> = ({ createTask }) => {
   const [task, setTask] = useState<string>('');
 
   const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
