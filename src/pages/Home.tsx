@@ -27,8 +27,8 @@ const Home: React.FC<HomeProps> = () => {
     fetchTasks();
   };
 
-  const handleEditTask = async (id: number) => {
-    await TodoService.editTask(id, 'new description'); //update this
+  const handleEditTask = async (id: number, newDescription: string) => {
+    await TodoService.editTask(id, newDescription);
     fetchTasks();
   };
 

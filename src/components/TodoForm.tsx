@@ -23,12 +23,12 @@ const TodoForm: React.FC<TodoFormProps> = ({ createTask }) => {
   return (
     <form onSubmit={handleSubmit}>
       <input
-        type="text"
-        placeholder="Write new task here..."
+        type='text'
+        placeholder='Write new task here...'
         value={task}
         onChange={handleTaskChange}
       />
-      <button type="submit">Create</button>
+      <button type='submit'>Create</button>
     </form>
   );
 };

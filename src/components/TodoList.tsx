@@ -1,10 +1,11 @@
 import React from 'react';
 import TodoItem from './TodoItem';
+import '../styles.css';
 
 interface TodoListProps {
   tasks: { id: number; description: string; state: string }[];
   setState: (id: number, newState: string) => void;
-  editTask: (id: number) => void;
+  editTask: (id: number, newDescription: string) => void;
   deleteTask: (id: number) => void;
 }
 
