@@ -1,5 +1,4 @@
-import { SERVER_ENDPOINTS } from '../constants';
-
+import { FILTERS, SERVER_ENDPOINTS } from '../constants';
 
 const headers = {
   'Authorization': 'eyJhbGciOiJIUzI1NiJ9.MQ.b1CAsW9VcBfagGWJd39uBV81ta8JjqSwHIw4A4DJ0ug',
@@ -65,5 +64,27 @@ export const TodoService = {
     } catch (error: any) {
       console.log(error);
     };
+  },
+  getFilteredTasks: async () => {
+    try {
+      const response = await fetch(`${SERVER_ENDPOINTS.TODOS}?filter=${FILTERS.INCOMPLETE}`, {
+        method: 'GET',
+        headers,
+      });
+      return response.json();
+    } catch (error: any) {
+      console.log(error);
+    }
+  },
+  getSortedTasks: async (order: string) => {
+    try {
+      const response = await fetch(`${SERVER_ENDPOINTS.TODOS}?orderBy=${order}`, {
+        method: 'GET',
+        headers,
+      });
+      return response.json();
+    } catch (error: any) {
+      console.log(error);
+    }
   },
 };

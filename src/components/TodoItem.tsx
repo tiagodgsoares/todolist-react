@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles.css';
+import { FILTERS } from '../constants';
 
 interface TodoItemProps {
   id: number;
@@ -11,13 +12,15 @@ interface TodoItemProps {
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ id, description, state, setState, edit, remove }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedDescription, setEditedDescription] = useState(description);
-  const [isCompleted, setIsCompleted] = useState(state === 'COMPLETE');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editedDescription, setEditedDescription] = useState<string>(description);
+  const [isCompleted, setIsCompleted] = useState<string>(state);
 
   const handleCheck = () => {
-    setIsCompleted(!isCompleted);
-    setState(id, 'COMPLETE');
+    if (isCompleted === FILTERS.INCOMPLETE) {
+      setIsCompleted(FILTERS.COMPLETE);
+      setState(id, FILTERS.COMPLETE);
+    }
   }
 
   const handleEdit = () => {
@@ -43,7 +46,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, description, state, setState, e
         </div>
       ) : (
         <div className='todo-item'>
-          <input type='checkbox' checked={isCompleted} onChange={handleCheck} />
+          <input type='checkbox' checked={isCompleted === FILTERS.COMPLETE} onChange={handleCheck} />
           <div className='description'>{description}</div>
           <button className='edit-button' onClick={handleEdit}>Edit</button>
           <button className='delete-button' onClick={() => remove(id)}>Delete</button>

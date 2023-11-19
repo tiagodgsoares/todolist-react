@@ -32,14 +32,12 @@ button {
   width: 60px;
   background-color: #6d6bde;
   color: white;
-  
 }
 
 .delete-button {
   width: 60px;
   background-color: #dc6d61;
   color: white;
-  
 }
 
 .description {
@@ -57,4 +55,8 @@ button {
 ul {
   margin-left: 0px;
   padding: 0px;
+}
+
+.tasks-header {
+  cursor: pointer;
 }
