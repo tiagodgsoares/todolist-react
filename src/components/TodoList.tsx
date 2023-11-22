@@ -1,6 +1,6 @@
 import React from 'react';
 import TodoItem from './TodoItem';
-import '../styles.css';
+import List from '@mui/material/List';
 
 interface TodoListProps {
   tasks: { id: number; description: string; state: string }[];
@@ -11,20 +11,19 @@ interface TodoListProps {
 
 const TodoList: React.FC<TodoListProps> = ({ tasks, setState, editTask, deleteTask }) => {
   return (
-    <div>
-      <ul>
-        {tasks.map((task) => (
-          <TodoItem
-            id={task.id}
-            description={task.description}
-            state={task.state}
-            setState={setState}
-            edit={editTask}
-            remove={deleteTask}
-          />
-        ))}
-      </ul>
-    </div>
+    <List dense sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
+      {tasks.map((task) => (
+        <TodoItem
+          key={task.id}
+          id={task.id}
+          description={task.description}
+          state={task.state}
+          setState={setState}
+          edit={editTask}
+          remove={deleteTask}
+        />
+      ))}
+    </List>
   );
 };
 

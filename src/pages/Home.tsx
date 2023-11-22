@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import TodoForm from '../components/TodoForm';
 import TodoList from '../components/TodoList';
 import { TodoService } from '../services/TodoService';
-import { FILTERS, ORDERS } from '../constants';
+import { ORDERS } from '../constants';
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 interface HomeProps { }
 
@@ -65,20 +70,33 @@ const Home: React.FC<HomeProps> = () => {
 
   return (
     <div>
-      <h1>To-Do App</h1>
+      <br />
       <TodoForm createTask={handleCreateTask} />
       <br />
-      <h2 className='tasks-header' onClick={handleSetSorting}>Tasks</h2>
-      <TodoList
-        tasks={tasks}
-        setState={handleSetState}
-        editTask={handleEditTask}
-        deleteTask={handleDeleteTask}
-      />
-      <button onClick={handleSetFilter}>
-        <input type='checkbox' checked={filtered} onChange={handleSetFilter} />
-        <div>Hide completed</div>
-      </button>
+      <Typography
+        onClick={handleSetSorting}
+        variant="h4"
+        component="div"
+        sx={{
+          flexGrow: 1,
+          '&:hover': {
+            cursor: 'pointer'
+          }
+        }}>
+        Tasks
+      </Typography>
+      <Box sx={{ border: 1, borderColor: 'divider', borderRadius: 2 }}>
+        <TodoList
+          tasks={tasks}
+          setState={handleSetState}
+          editTask={handleEditTask}
+          deleteTask={handleDeleteTask}
+        />
+      </Box>
+      <br />
+      <FormGroup>
+        <FormControlLabel control={<Switch checked={filtered} onChange={handleSetFilter} />} label="Hide completed" />
+      </FormGroup>
     </div>
   );
 };

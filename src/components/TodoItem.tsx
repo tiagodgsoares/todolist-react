@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
-import '../styles.css';
 import { FILTERS } from '../constants';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
 interface TodoItemProps {
   id: number;
@@ -33,26 +42,42 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, description, state, setState, e
   };
 
   return (
-    <div>
-      {isEditing ? (
-        <div className='edit-container'>
-          <input
-            className='editor-input'
-            type='text'
-            value={editedDescription}
-            onChange={(e) => setEditedDescription(e.target.value)}
+    <ListItem disablePadding>
+      <ListItemButton dense>
+        <ListItemIcon>
+          <Checkbox
+            edge="start"
+            checked={isCompleted === FILTERS.COMPLETE}
+            tabIndex={-1}
+            disableRipple
+            inputProps={{ 'aria-labelledby': `checkbox-list-label-${id}` }}
+            onChange={handleCheck}
           />
-          <button onClick={handleSave}>Save</button>
-        </div>
-      ) : (
-        <div className='todo-item'>
-          <input type='checkbox' checked={isCompleted === FILTERS.COMPLETE} onChange={handleCheck} />
-          <div className='description'>{description}</div>
-          <button className='edit-button' onClick={handleEdit}>Edit</button>
-          <button className='delete-button' onClick={() => remove(id)}>Delete</button>
-        </div>
-      )}
-    </div>
+        </ListItemIcon>
+        {isEditing ? (
+          <>
+            <TextField
+              value={editedDescription}
+              onChange={(e) => setEditedDescription(e.target.value)}
+              sx={{ width: '75%' }}
+            />
+            <IconButton edge="end" aria-label="save" onClick={handleSave}>
+              <CheckOutlinedIcon />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <ListItemText id={`checkbox-list-label-${id}`} primary={description} />
+            <IconButton edge="end" aria-label="edit" onClick={handleEdit}>
+              <EditIcon />
+            </IconButton>
+            <IconButton edge="end" aria-label="delete" onClick={() => remove(id)}>
+              <DeleteIcon />
+            </IconButton>
+          </>
+        )}
+      </ListItemButton>
+    </ListItem>
   );
 };
 
