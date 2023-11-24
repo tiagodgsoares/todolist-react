@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TodoForm from '../components/TodoForm';
 import TodoList from '../components/TodoList';
-import { TodoService } from '../services/TodoService';
+import useTodoService from '../services/TodoService';
 import { ORDERS } from '../constants';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
@@ -12,72 +12,72 @@ import Typography from '@mui/material/Typography';
 interface HomeProps { }
 
 const Home: React.FC<HomeProps> = () => {
-  const [tasks, setTasks] = useState<{ id: number; description: string; state: string }[]>([]);
+  const [todos, setTodos] = useState<{ id: number; description: string; state: string }[]>([]);
   const [filtered, setFiltered] = useState<boolean>(false);
   const [order, setOrder] = useState<string>(ORDERS.CREATED_AT);
+  const todoService = useTodoService();
 
-  const fetchTasks = async () => {
-    const response = await TodoService.getTasks();
-    setTasks(response);
+  const fetchTodos = async () => {
+    const response = await todoService.getTodos();
+    setTodos(response);
   };
 
   useEffect(() => {
-    fetchTasks();
+    fetchTodos();
   }, []);
 
-  const handleCreateTask = async (task: string) => {
-    await TodoService.addTask(task);
-    fetchTasks();
+  const handleCreateTodo = async (todo: string) => {
+    await todoService.addTodo(todo);
+    fetchTodos();
   };
 
   const handleSetState = async (id: number, newState: string) => {
-    await TodoService.setState(id, newState);
-    fetchTasks();
+    await todoService.setState(id, newState);
+    fetchTodos();
   };
 
-  const handleEditTask = async (id: number, newDescription: string) => {
-    await TodoService.editTask(id, newDescription);
-    fetchTasks();
+  const handleEditTodo = async (id: number, newDescription: string) => {
+    await todoService.editTodo(id, newDescription);
+    fetchTodos();
   };
 
-  const handleDeleteTask = async (id: number) => {
-    await TodoService.deleteTask(id);
-    fetchTasks();
+  const handleDeleteTodo = async (id: number) => {
+    await todoService.deleteTodo(id);
+    fetchTodos();
   };
 
   const handleSetFilter = async () => {
     if (filtered) {
-      fetchTasks();
+      fetchTodos();
     } else {
-      const response = await TodoService.getFilteredTasks();
-      setTasks(response);
+      const response = await todoService.getFilteredTodos();
+      setTodos(response);
     }
     setFiltered(!filtered);
   };
 
   const handleSetSorting = async () => {
     if (order === ORDERS.CREATED_AT) {
-      const response = await TodoService.getSortedTasks(ORDERS.DESCRIPTION);
-      setTasks(response);
+      const response = await todoService.getSortedTodos(ORDERS.DESCRIPTION);
+      setTodos(response);
       setOrder(ORDERS.DESCRIPTION);
     }
     if (order === ORDERS.DESCRIPTION) {
-      const response = await TodoService.getSortedTasks(ORDERS.CREATED_AT);
-      setTasks(response);
+      const response = await todoService.getSortedTodos(ORDERS.CREATED_AT);
+      setTodos(response);
       setOrder(ORDERS.CREATED_AT);
     }
   };
 
   return (
-    <div>
-      <br />
-      <TodoForm createTask={handleCreateTask} />
-      <br />
+    <Box sx={{ mt: 2 }}>
+      <TodoForm createTodo={handleCreateTodo} />
       <Typography
         onClick={handleSetSorting}
-        variant="h4"
-        component="div"
+        variant='h4'
+        component='div'
         sx={{
+          mt: 4,
           flexGrow: 1,
           '&:hover': {
             cursor: 'pointer'
@@ -85,19 +85,18 @@ const Home: React.FC<HomeProps> = () => {
         }}>
         Tasks
       </Typography>
-      <Box sx={{ border: 1, borderColor: 'divider', borderRadius: 2 }}>
+      <Box sx={{ mt: 1, border: 1, borderColor: 'divider', borderRadius: 2 }}>
         <TodoList
-          tasks={tasks}
+          todos={todos}
           setState={handleSetState}
-          editTask={handleEditTask}
-          deleteTask={handleDeleteTask}
+          editTodo={handleEditTodo}
+          deleteTodo={handleDeleteTodo}
         />
       </Box>
-      <br />
-      <FormGroup>
-        <FormControlLabel control={<Switch checked={filtered} onChange={handleSetFilter} />} label="Hide completed" />
+      <FormGroup sx={{ mt: 2 }}>
+        <FormControlLabel control={<Switch checked={filtered} onChange={handleSetFilter} />} label='Hide completed' />
       </FormGroup>
-    </div>
+    </Box>
   );
 };
 

@@ -1,35 +1,42 @@
+import { useState } from 'react';
 import { FILTERS, SERVER_ENDPOINTS } from '../constants';
 
-const headers = {
-  'Authorization': 'eyJhbGciOiJIUzI1NiJ9.MQ.b1CAsW9VcBfagGWJd39uBV81ta8JjqSwHIw4A4DJ0ug',
-  'Content-Type': 'application/json',
-};
+const useTodoService = () => {
+  const accessToken = localStorage.getItem('accessToken') || '';
+  const [userId, setUserId] = useState<string>('');
 
-export const TodoService = {
-  addTask: async (task: string) => {
+  const headers = {
+    'Authorization': accessToken,
+    'Content-Type': 'application/json',
+    'userId': userId,
+  };
+
+  const addTodo = async (todo: string) => {
     try {
       const response = await fetch(SERVER_ENDPOINTS.TODOS, {
         method: 'POST',
         headers,
-        body: JSON.stringify({ description: task }),
+        body: JSON.stringify({ description: todo }),
       });
       return response.json();
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
-  },
-  getTasks: async () => {
+  };
+
+  const getTodos = async () => {
     try {
       const response = await fetch(SERVER_ENDPOINTS.TODOS, {
         method: 'GET',
         headers,
       });
       return response.json();
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
-  },
-  setState: async (id: number, newState: string) => {
+  };
+
+  const setState = async (id: number, newState: string) => {
     try {
       const response = await fetch(`${SERVER_ENDPOINTS.TODOS}/${id}`, {
         method: 'PATCH',
@@ -37,11 +44,12 @@ export const TodoService = {
         body: JSON.stringify({ state: newState }),
       });
       return response.json();
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
-  },
-  editTask: async (id: number, newDescription: string) => {
+  };
+
+  const editTodo = async (id: number, newDescription: string) => {
     try {
       const response = await fetch(`${SERVER_ENDPOINTS.TODOS}/${id}`, {
         method: 'PATCH',
@@ -49,11 +57,12 @@ export const TodoService = {
         body: JSON.stringify({ description: newDescription }),
       })
       return response.json();
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
-  },
-  deleteTask: async (id: number) => {
+  };
+
+  const deleteTodo = async (id: number) => {
     try {
       const response = await fetch(`${SERVER_ENDPOINTS.TODOS}/${id}`, {
         method: 'DELETE',
@@ -61,30 +70,45 @@ export const TodoService = {
       });
       const data = await response.json();
       return data;
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
-    };
-  },
-  getFilteredTasks: async () => {
+    }
+  };
+
+  const getFilteredTodos = async () => {
     try {
       const response = await fetch(`${SERVER_ENDPOINTS.TODOS}?filter=${FILTERS.INCOMPLETE}`, {
         method: 'GET',
         headers,
       });
       return response.json();
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
-  },
-  getSortedTasks: async (order: string) => {
+  };
+
+  const getSortedTodos = async (order: string) => {
     try {
       const response = await fetch(`${SERVER_ENDPOINTS.TODOS}?orderBy=${order}`, {
         method: 'GET',
         headers,
       });
       return response.json();
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
-  },
+  };
+
+  return {
+    setUserId,
+    addTodo,
+    getTodos,
+    setState,
+    editTodo,
+    deleteTodo,
+    getFilteredTodos,
+    getSortedTodos,
+  };
 };
+
+export default useTodoService;

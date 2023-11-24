@@ -1,8 +1,8 @@
-import { environment } from "../src/environment";
+import { environment } from '../src/environment';
 
 export const SERVER_ENDPOINTS = {
     TODOS: `${environment.serverURL}/todos`,
-    AUTH: `${environment.serverURL}/auth`,
+    LOGIN: `${environment.serverURL}/login`,
 }
 
 export const FILTERS = {
