@@ -8,6 +8,13 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Logout from '../components/Logout';
+import { useNavigate } from 'react-router-dom';
 
 interface HomeProps { }
 
@@ -16,6 +23,7 @@ const Home: React.FC<HomeProps> = () => {
   const [filtered, setFiltered] = useState<boolean>(false);
   const [order, setOrder] = useState<string>(ORDERS.CREATED_AT);
   const todoService = useTodoService();
+  const navigate = useNavigate();
 
   const fetchTodos = async () => {
     const response = await todoService.getTodos();
@@ -70,33 +78,61 @@ const Home: React.FC<HomeProps> = () => {
   };
 
   return (
-    <Box sx={{ mt: 2 }}>
-      <TodoForm createTodo={handleCreateTodo} />
-      <Typography
-        onClick={handleSetSorting}
-        variant='h4'
-        component='div'
-        sx={{
-          mt: 4,
-          flexGrow: 1,
-          '&:hover': {
-            cursor: 'pointer'
-          }
-        }}>
-        Tasks
-      </Typography>
-      <Box sx={{ mt: 1, border: 1, borderColor: 'divider', borderRadius: 2 }}>
-        <TodoList
-          todos={todos}
-          setState={handleSetState}
-          editTodo={handleEditTodo}
-          deleteTodo={handleDeleteTodo}
-        />
-      </Box>
-      <FormGroup sx={{ mt: 2 }}>
-        <FormControlLabel control={<Switch checked={filtered} onChange={handleSetFilter} />} label='Hide completed' />
-      </FormGroup>
-    </Box>
+    <>
+      {
+        localStorage.getItem('accessToken') ? (
+          <Box>
+            <Box sx={{ mb: 2, display: 'flex', flexDirection: 'row-reverse' }}>
+              <Logout />
+            </Box>
+            <TodoForm createTodo={handleCreateTodo} />
+            <Typography
+              onClick={handleSetSorting}
+              variant='h4'
+              component='div'
+              color="text.secondary"
+              sx={{
+                mt: 4,
+                flexGrow: 1,
+                '&:hover': {
+                  cursor: 'pointer'
+                }
+              }}>
+              Tasks
+            </Typography>
+            <Box sx={{ mt: 1, border: 1, borderColor: 'divider', borderRadius: 2 }}>
+              <TodoList
+                todos={todos}
+                setState={handleSetState}
+                editTodo={handleEditTodo}
+                deleteTodo={handleDeleteTodo}
+              />
+            </Box>
+            <FormGroup sx={{ mt: 2 }}>
+              <FormControlLabel control={<Switch checked={filtered} onChange={handleSetFilter} />} label='Hide completed' />
+            </FormGroup>
+          </Box>
+
+        ) : (
+          <Card sx={{ maxWidth: 500 }}>
+            <CardMedia
+              component="img"
+              alt="to-do list"
+              height="300"
+              image={require("./todolist_image.jpeg")}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" color="text.secondary">
+                To-Do App
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="large" onClick={() => {navigate('/login')}}>Sign In</Button>
+              <Button size="large" onClick={() => {navigate('/register')}}>Sign Up</Button>
+            </CardActions>
+          </Card>
+        )}
+    </>
   );
 };
 

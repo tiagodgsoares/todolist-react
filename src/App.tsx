@@ -8,8 +8,9 @@ function App() {
     <BrowserRouter>
       <div className='App'>
         <Routes>
-          <Route path='/login' element={<Auth />} />
-          <Route path='/:id' element={<Home />} />
+          <Route path='/register' element={<Auth isRegistered={false} />} />
+          <Route path='/login' element={<Auth isRegistered={true} />} />
+          <Route path='/' element={<Home />} />
         </Routes>
       </div>
     </BrowserRouter>

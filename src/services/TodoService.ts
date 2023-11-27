@@ -4,7 +4,6 @@ import { FILTERS, SERVER_ENDPOINTS } from '../constants';
 const useTodoService = () => {
   const accessToken = localStorage.getItem('accessToken') || '';
   const [userId, setUserId] = useState<string>('');
-
   const headers = {
     'Authorization': accessToken,
     'Content-Type': 'application/json',

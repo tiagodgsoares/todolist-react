@@ -3,6 +3,7 @@ import { environment } from '../src/environment';
 export const SERVER_ENDPOINTS = {
     TODOS: `${environment.serverURL}/todos`,
     LOGIN: `${environment.serverURL}/login`,
+    USERS: `${environment.serverURL}/users`,
 }
 
 export const FILTERS = {
